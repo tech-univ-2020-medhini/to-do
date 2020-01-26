@@ -1,7 +1,8 @@
-const fs = require('fs');
-function readJson() {
-  const rawdata = fs.readFileSync('../Resources/notes.json');
-  return json = JSON.parse(rawdata);
-}
+const fs = require('promise-fs');
+
+const readJson = async () => {
+  const rawdata = await fs.readFile('../Resources/notes.json');
+  return JSON.parse(rawdata);
+};
 
 module.exports = readJson;
