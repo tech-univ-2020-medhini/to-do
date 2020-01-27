@@ -1,14 +1,15 @@
 const getQuotesHandler = require('../../src/Handlers/quotesHandlers');
-const Quote = require('inspirational-quotes');
+const axios = require('axios').default;
 
-describe('The get quote shandler', () => {
-  it('should return a string', () => {
+describe('The get quotes handler', () => {
+  it('should return an object', () => {
     const result = getQuotesHandler();
-    expect(typeof result).toBe('string');
+    expect(result).toBeInstanceOf(Object);
   });
-  it('should return a string', () => {
-    const mockRandom = jest.spyOn(Quote, 'getRandomQuote');
+  it('should call axiom.get', (done) => {
+    const mockRandom = jest.spyOn(axios, 'get');
     getQuotesHandler();
     expect(mockRandom).toHaveBeenCalled();
+    done();
   });
 });
