@@ -1,8 +1,7 @@
-const readJson = require('./readJson');
-const writeJson = require('./writeJson');
+const {readJson, writeJson} = require('../../src/Utils/readWrite');
 const fs = require('promise-fs');
 
-describe('The read json function', () =>{
+describe('The read json function', () => {
   it('Should call the fs.readFile function', (done) => {
     const spiedOn = jest.spyOn(fs, 'readFile');
     readJson();

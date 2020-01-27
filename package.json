@@ -13,6 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "@hapi/hapi": "^19.0.5",
+    "@hapi/joi": "^17.1.0",
+    "inspirational-quotes": "^1.0.8",
     "jest": "^25.1.0",
     "promise-fs": "^2.1.1",
     "uuidv4": "^6.0.2"

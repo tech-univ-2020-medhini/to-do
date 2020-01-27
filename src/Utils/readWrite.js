@@ -4,5 +4,9 @@ const readJson = async () => {
   const rawdata = await fs.readFile('./Resources/notes.json');
   return JSON.parse(rawdata);
 };
+const writeJson = async (args) => {
+  fs.writeFile('./Resources/notes.json', args);
+};
 
-module.exports = readJson;
+
+module.exports = {readJson, writeJson};

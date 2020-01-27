@@ -1,4 +1,4 @@
-const server = require('./index');
+const server = require('../src/server');
 
 const init = async () => {
   await server.initialize();
@@ -32,6 +32,24 @@ describe('The server ', () => {
         'title': 'Work',
         'description': 'More work',
       },
+    };
+    const response = await server.inject(injectOptions);
+    expect(response.statusCode).toEqual(200);
+    done();
+  });
+  it('Should should return the correct status code when put is called with the right url', async (done) =>{
+    const injectOptions = {
+      method: 'PUT',
+      url: '/notes/2162440f-cbcb-4f92-b470-59b6e7a7ded8',
+    };
+    const response = await server.inject(injectOptions);
+    expect(response.statusCode).toEqual(200);
+    done();
+  });
+  it('Should should return the correct status code when put is called with the right url', async (done) =>{
+    const injectOptions = {
+      method: 'DELETE',
+      url: '/notes/2162440f-cbcb-4f92-b470-59b6e7a7ded8',
     };
     const response = await server.inject(injectOptions);
     expect(response.statusCode).toEqual(200);
