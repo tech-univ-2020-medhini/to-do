@@ -1,29 +1,31 @@
 const {getNotesHandler, postNotesHandler} = require('./handlers');
-const readJson = require('./readJson');
+let readJson = require('./readJson');
 describe('The get notes handler should', () =>{
-  it('Should return the json object', (done) => {
+  it('Should return the json object', async (done) => {
     const mockH = {
-      response: jest.fn(),
+      response: ()=>{},
     };
-    getNotesHandler(null, mockH);
-    expect(mockH.response).toHaveBeenCalledWith(readJson());
+    readJson = jest.fn();
+    await getNotesHandler(null, mockH);
+    expect(readJson).toHaveBeenCalled();
     done();
   });
 });
 
 describe('The post notes handler should', () =>{
-  it('Should reply with note added', (done) => {
+  it('Should reply with note added', async (done) => {
     const mockReq = {
       payload: {
-        'title': 'work',
+        'title': 'second',
         'description': 'More Work',
       },
     };
     const mockH = {
-      response: jest.fn(),
+      response: ()=>{},
     };
-    postNotesHandler(mockReq, mockH);
-    expect(mockH.response).toHaveBeenCalledWith('Note saved');
+    readJson = jest.fn();
+    await postNotesHandler(mockReq, mockH);
+    expect(readJson).toHaveBeenCalled();
     done();
   });
 });
