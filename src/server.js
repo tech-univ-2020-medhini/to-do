@@ -1,4 +1,4 @@
-const route = require('./Routes/routes');
+const route = require('./Routes/noteRoutes');
 const Joi = require('@hapi/joi');
 
 const buildServer = () => {

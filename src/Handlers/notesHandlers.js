@@ -1,9 +1,9 @@
-const readWrite = require('../Utils/readWrite');
+const readWrite = require('../Utils/fileOperations');
 const {uuid} = require('uuidv4');
 
 const getNotesHandler = async (request, h) => {
   const json = await readWrite.readJson();
-  return h.response(json);
+  return h.response(json).code(200);
 };
 
 const postNotesHandler = async (request, h) => {
@@ -16,9 +16,9 @@ const postNotesHandler = async (request, h) => {
 
     notesJson.notes = [...notesJson.notes, note];
     readWrite.writeJson(JSON.stringify(notesJson));
-    return h.response('Note added');
+    return h.response('Note added').code(200);
   } catch (err) {
-    return h.response(err.message);
+    return h.response(err.message).code(500);
   }
 };
 
@@ -36,12 +36,11 @@ const deleteNotesHandler = async (request, h) => {
     //   id += 1;
     // });
     readWrite.writeJson(JSON.stringify(notesJson));
-    return h.response('Note deleted');
+    return h.response('Note deleted').code(200);
   } catch (err) {
-    return h.response(err.message);
+    return h.response(err.message).code(500);
   }
 };
-
 const changeStateHandler = async (request, h) => {
   try {
     const notesJson = await readWrite.readJson();
@@ -58,9 +57,9 @@ const changeStateHandler = async (request, h) => {
     // console.log(notesJson.notes, id);
 
     readWrite.writeJson(JSON.stringify(notesJson));
-    return h.response('State changed');
+    return h.response('State changed').code(200);
   } catch (err) {
-    return h.response(err.message);
+    return h.response(err.message).code(500);
   }
 };
 

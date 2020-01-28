@@ -1,4 +1,5 @@
-const server = require('../src/server');
+const buildServer = require('../src/server');
+const server = buildServer();
 
 const init = async () => {
   await server.initialize();
@@ -15,6 +16,7 @@ describe('The server ', () => {
   afterEach(async () => {
     await server.stop();
   });
+
   it('Should should return the correct status code when get is called with the right url', async (done) =>{
     const injectOptions = {
       method: 'GET',

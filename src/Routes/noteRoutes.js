@@ -1,6 +1,6 @@
 const {getNotesHandler, postNotesHandler, deleteNotesHandler, changeStateHandler} = require('../Handlers/notesHandlers');
 const getQuotesHandler = require('../Handlers/quotesHandlers');
-const schemas = require('../Schemas/schemas');
+const schemas = require('../Schemas/notesSchemas');
 
 const routes = [{path: '/notes', method: 'GET', handler: getNotesHandler},
   {path: '/notes', method: 'POST', config: {
@@ -11,7 +11,7 @@ const routes = [{path: '/notes', method: 'GET', handler: getNotesHandler},
   }},
 
   {path: '/notes/{id}', method: 'DELETE', config: {
-    handler: changeStateHandler,
+    handler: deleteNotesHandler,
     validate: {
       params: schemas.putSchema,
     },
