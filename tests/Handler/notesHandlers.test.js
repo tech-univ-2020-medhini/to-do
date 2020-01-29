@@ -1,19 +1,25 @@
-const {getNotesHandler, postNotesHandler, changeStateHandler, deleteNotesHandler} = require('../../src/Handlers/notesHandlers');
-const readWrite = require('../../src/Utils/fileOperations');
+const {getNotesHandler, postNotesHandler, changeStateHandler,
+  deleteNotesHandler} = require('../../src/Handlers/notesHandlers');
+const db = require('../../src/Utils/dbOperations');
 describe('The get notes handler should', () =>{
   it('Should call readJson', async (done) => {
+    const mockReadResponse = {
+      'notes': [],
+    };
     const mockCode = jest.fn();
     const mockH = {
-      response: ()=>{
+      response: jest.fn(()=>{
         return {
-          code: mockCode,
-        };
-      },
+          code: mockCode};
+      }),
     };
-    const mockRead = jest.spyOn(readWrite, 'readJson');
+    const mockGetNotes = jest.spyOn(db, 'getNotes');
+    mockGetNotes.mockResolvedValue(mockReadResponse);
     await getNotesHandler(null, mockH);
-    expect(mockRead).toHaveBeenCalled();
+    expect(mockGetNotes).toHaveBeenCalled();
+    expect(mockH.response).toHaveBeenCalledWith(mockReadResponse);
     expect(mockCode).toHaveBeenCalledWith(200);
+    // mockRead.mockRestore();
     done();
   });
 });
@@ -26,23 +32,46 @@ describe('The post notes handler should', () =>{
         'description': 'More Work',
       },
     };
+    const mockReadResponse = {
+      'notes': [],
+    };
     const mockCode = jest.fn();
     const mockH = {
-      response: (res)=>{
+      response: jest.fn(()=>{
         return {
-          code: mockCode,
-        };
-      },
+          code: mockCode};
+      }),
     };
-    const mockWrite = jest.spyOn(readWrite, 'writeJson');
+    const mockInsert = jest.spyOn(db, 'insertNote');
+    // const mockRead = jest.spyOn(readWrite, 'readJson');
+    mockInsert.mockResolvedValue(true);
     await postNotesHandler(mockReq, mockH);
-    expect(mockWrite).toHaveBeenCalled();
+    expect(mockInsert).toHaveBeenCalled();
+    expect(mockH.response).toHaveBeenCalledWith('Note added');
     expect(mockCode).toHaveBeenCalledWith(200);
+    // mockRead.mockRestore();
+    mockInsert.mockRestore();
     done();
   });
 });
 describe('The change state handler should', () =>{
   it('Should call writeJson', async (done) => {
+    const mockReadResponse = {
+      'notes': [{
+        id: '69bdeb20-596e-4abd-985b-82dff67696f6',
+        title: 'Note 1',
+        description: 'something',
+        active: true,
+      }],
+    };
+    const expectedResponse = {
+      'notes': [{
+        id: '69bdeb20-596e-4abd-985b-82dff67696f6',
+        title: 'Note 1',
+        description: 'something',
+        active: false,
+      }],
+    };
     const mockReq = {
       params: {
         id: '69bdeb20-596e-4abd-985b-82dff67696f6',
@@ -50,21 +79,36 @@ describe('The change state handler should', () =>{
     };
     const mockCode = jest.fn();
     const mockH = {
-      response: ()=>{
+      response: jest.fn(()=>{
         return {
-          code: mockCode,
-        };
-      },
+          code: mockCode};
+      }),
     };
-    const mockWrite = jest.spyOn(readWrite, 'writeJson');
+    const mockChange = jest.spyOn(db, 'changeState');
+    // const mockRead = jest.spyOn(readWrite, 'readJson');
+    mockChange.mockResolvedValue(true);
     await changeStateHandler(mockReq, mockH);
-    expect(mockWrite).toHaveBeenCalled();
-    // expect(mockCode).toHaveBeenCalledWith(200);
+    expect(mockChange).toHaveBeenCalledWith(mockReq.params.id);
+    expect(mockH.response).toHaveBeenCalledWith('State changed');
+    expect(mockCode).toHaveBeenCalledWith(200);
+    // mockRead.mockRestore();
+    mockChange.mockRestore();
     done();
   });
 });
 describe('The delete notes handler should', () =>{
   it('Should call writeJson', async (done) => {
+    const mockReadResponse = {
+      'notes': [{
+        id: '69bdeb20-596e-4abd-985b-82dff67696f6',
+        title: 'Note 1',
+        description: 'something',
+        active: true,
+      }],
+    };
+    const expectedResponse = {
+      'notes': [],
+    };
     const mockReq = {
       params: {
         id: '69bdeb20-596e-4abd-985b-82dff67696f6',
@@ -72,15 +116,20 @@ describe('The delete notes handler should', () =>{
     };
     const mockCode = jest.fn();
     const mockH = {
-      response: jest.fn((res)=>{
-        return {code: mockCode}
-      });
+      response: jest.fn(()=>{
+        return {
+          code: mockCode};
+      }),
     };
-    const mockRead = jest.spyOn(readWrite, 'readJson');
-    const mockWrite = jest.spyOn(readWrite, 'writeJson');
-    mockRead.mockResolvedValue({notes: []});
+    const mockDelete = jest.spyOn(db, 'deleteNote');
+    // const mockWrite = jest.spyOn(readWrite, 'writeJson');
+    mockDelete.mockResolvedValue(true);
     await deleteNotesHandler(mockReq, mockH);
-    expect(mockWrite).toHaveBeenCalled();
+    expect(mockDelete).toHaveBeenCalledWith(mockReq.params.id);
+    expect(mockH.response).toHaveBeenCalledWith('Note deleted');
+    expect(mockCode).toHaveBeenCalledWith(200);
+    // mockRead.mockRestore();
+    mockDelete.mockRestore();
     done();
   });
 });
