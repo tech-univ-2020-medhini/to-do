@@ -19,18 +19,27 @@ const getNotes = async () => {
 };
 
 const changeState = async (id) => {
-  return await sequelize.query(
+  const result = await sequelize.query(
       'UPDATE NOTES SET isactive = NOT isactive where id = :id', {
         replacements: {
           id,
         }, type: sequelize.QueryTypes.UPDATE});
+  if (result[1] === 0) {
+    return false;
+  }
+  return true;
 };
 
 const deleteNote = async (id) => {
-  return await sequelize.query(
+  const result = await sequelize.query(
       'DELETE FROM NOTES where id = :id', {
         replacements: {
           id,
         }, type: sequelize.QueryTypes.UPDATE});
+  if (result[1] === 0) {
+    return false;
+  }
+  return true;
 };
+
 module.exports = {insertNote, getNotes, changeState, deleteNote, sequelize};

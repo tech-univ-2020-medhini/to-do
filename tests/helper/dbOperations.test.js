@@ -1,4 +1,5 @@
-const {insertNote, getNotes, changeState, deleteNote, sequelize} = require('../../src/Utils/dbOperations');
+const {insertNote, getNotes, changeState, deleteNote, sequelize} =
+require('../../src/helpers/dbOperations');
 
 describe('The db operations', () => {
 //   beforeAll(() => {
@@ -43,22 +44,22 @@ describe('The db operations', () => {
   });
   describe('The change state function ', () =>{
     it('Should toggle the state of isactive', async () => {
-      const mockId = 'ac93a90d-91e9-403a-96cb-a61ed59a5dcf';
+      const mockId = '69bdeb20-596e-4abd-985b-82dff67696f6';
       const mockSequelize = jest.spyOn(sequelize, 'query');
-      mockSequelize.mockResolvedValue(mockId);
+      mockSequelize.mockResolvedValue([[], 1]);
       const result = await changeState(mockId);
       expect(mockSequelize).toHaveBeenCalled();
-      expect(result).toEqual(mockId);
+      expect(result).toEqual(true);
     });
   });
   describe('The delete notesFunction function ', () =>{
     it('Should delete the note from the database', async () => {
       const mockId = 'ac93a90d-91e9-403a-96cb-a61ed59a5dcf';
       const mockSequelize = jest.spyOn(sequelize, 'query');
-      mockSequelize.mockResolvedValue(mockId);
+      mockSequelize.mockResolvedValue([[], 1]);
       const result = await deleteNote(mockId);
       expect(mockSequelize).toHaveBeenCalled();
-      expect(result).toEqual(mockId);
+      expect(result).toEqual(true);
     });
   });
 });

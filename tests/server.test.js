@@ -1,5 +1,6 @@
 const buildServer = require('../src/server');
 const server = buildServer();
+const db = require('../src/helpers/dbOperations');
 
 const init = async () => {
   await server.initialize();
@@ -22,6 +23,11 @@ describe('The server ', () => {
       method: 'GET',
       url: '/notes',
     };
+    const mockReadResponse = {
+      'notes': [],
+    };
+    const mockGetNotes = jest.spyOn(db, 'getNotes');
+    mockGetNotes.mockResolvedValue(mockReadResponse);
     const response = await server.inject(injectOptions);
     expect(response.statusCode).toEqual(200);
     done();
@@ -35,6 +41,8 @@ describe('The server ', () => {
         'description': 'More work',
       },
     };
+    const mockInsert = jest.spyOn(db, 'insertNote');
+    mockInsert.mockResolvedValue(true);
     const response = await server.inject(injectOptions);
     expect(response.statusCode).toEqual(200);
     done();
@@ -44,6 +52,8 @@ describe('The server ', () => {
       method: 'PUT',
       url: '/notes/2162440f-cbcb-4f92-b470-59b6e7a7ded8',
     };
+    const mockChange = jest.spyOn(db, 'changeState');
+    mockChange.mockResolvedValue(true);
     const response = await server.inject(injectOptions);
     expect(response.statusCode).toEqual(200);
     done();
@@ -53,6 +63,8 @@ describe('The server ', () => {
       method: 'DELETE',
       url: '/notes/2162440f-cbcb-4f92-b470-59b6e7a7ded8',
     };
+    const mockDelete = jest.spyOn(db, 'deleteNote');
+    mockDelete.mockResolvedValue(true);
     const response = await server.inject(injectOptions);
     expect(response.statusCode).toEqual(200);
     done();
