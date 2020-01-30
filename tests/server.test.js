@@ -1,6 +1,8 @@
 const buildServer = require('../src/server');
-const server = buildServer();
 const db = require('../src/helpers/dbOperations');
+
+const server = buildServer();
+console.log(server);
 
 const init = async () => {
   await server.initialize();
@@ -70,3 +72,4 @@ describe('The server ', () => {
     done();
   });
 });
+

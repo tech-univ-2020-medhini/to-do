@@ -1,9 +1,13 @@
 const buildServer = require('./src/server');
-const server = buildServer();
 
-server.start((err) => {
-  if (err) {
-    throw err;
-  }
-});
+const start = async () => {
+  const server = await buildServer();
+  await server.start((err) => {
+    if (err) {
+      throw err;
+    }
+  });
+};
+start();
 console.log('Server started');
+// module.exports = server;

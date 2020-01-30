@@ -1,5 +1,7 @@
-const {insertNote, getNotes, changeState, deleteNote, sequelize} =
+const {insertNote, getNotes, changeState, deleteNote} =
 require('../../src/helpers/dbOperations');
+// const Sequelize = require('sequelize');
+// const sequelize = new Sequelize();
 
 describe('The db operations', () => {
 //   beforeAll(() => {

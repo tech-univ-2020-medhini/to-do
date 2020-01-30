@@ -4,7 +4,7 @@ const {uuid} = require('uuidv4');
 
 const getNotesHandler = async (request, h) => {
   try {
-    const json = await db.getNotes();
+    const json = await db.getNotes(request.server.sequelize);
     return h.response(json).code(200);
   } catch (err) {
     return h.response(err.message).code(500);
@@ -18,7 +18,7 @@ const postNotesHandler = async (request, h) => {
     note.id = uuid();
     note.active = true;
 
-    await db.insertNote(note);
+    await db.insertNote(request.server.sequelize, note);
 
     return h.response('Note added').code(200);
   } catch (err) {
@@ -29,7 +29,7 @@ const postNotesHandler = async (request, h) => {
 const deleteNotesHandler = async (request, h) => {
   try {
     const noteId = request.params.id;
-    const result = await db.deleteNote(noteId);
+    const result = await db.deleteNote(request.server.sequelize, noteId);
 
     if (!result) {
       return h.response('No note deleted').code(404);
@@ -42,7 +42,7 @@ const deleteNotesHandler = async (request, h) => {
 const changeStateHandler = async (request, h) => {
   try {
     const noteId = request.params.id;
-    const result = await db.changeState(noteId);
+    const result = await db.changeState(request.server.sequelize, noteId);
     if (!result) {
       return h.response('No note found').code(404);
     }
