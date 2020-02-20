@@ -18,9 +18,9 @@ const postNotesHandler = async (request, h) => {
     note.id = uuid();
     note.active = true;
 
-    await db.insertNote(request.server.sequelize, note);
+    const response = await db.insertNote(request.server.sequelize, note);
 
-    return h.response('Note added').code(200);
+    return h.response(response).code(200);
   } catch (err) {
     return h.response(err.message).code(500);
   }
