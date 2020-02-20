@@ -12,8 +12,8 @@ const buildServer = async () => {
   await server.validator(Joi);
   server.route(route);
   await server.register(connection);
+
   return server;
 };
-// console.log(buildServer());
 
 module.exports = buildServer;

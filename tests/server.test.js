@@ -1,19 +1,19 @@
 const buildServer = require('../src/server');
 const db = require('../src/helpers/dbOperations');
 
-const server = buildServer();
-console.log(server);
-
-const init = async () => {
-  await server.initialize();
-  return server;
-};
+// console.log(server);
+// const init = async () => {
+//   await server.initialize();
+//   return server;
+// };
 
 describe('The server ', () => {
   let server;
 
   beforeEach(async () => {
-    server = await init();
+    server = await buildServer();
+    await server.initialize();
+    // server = await init();
   });
 
   afterEach(async () => {

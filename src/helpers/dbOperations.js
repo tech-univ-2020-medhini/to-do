@@ -1,21 +1,24 @@
 // const sequelize = require('../connection');
+const db = require('../../models/index');
 
-const insertNote = async (sequelize, todo) => {
+const insertNote = async ( todo) => {
   const {id, title, description, active} = todo;
   // console.log(id, title, description, active);
-  return await sequelize.query(
-      'INSERT INTO NOTES VALUES (:id, :title, :description, :status)', {
-        replacements: {
-          id: id,
-          title: title,
-          description: description,
-          status: active,
-        }, type: sequelize.QueryTypes.INSERT});
+  // return await sequelize.query(
+  //     'INSERT INTO NOTES VALUES (:id, :title, :description, :status)', {
+  //       replacements: {
+  //         id: id,
+  //         title: title,
+  //         description: description,
+  //         status: active,
+  //       }, type: sequelize.QueryTypes.INSERT});
+  return await db.notes.create({id: id, title: title, description: description, isactive: active});
 };
 
-const getNotes = async (sequelize) => {
-  return await sequelize.query(
-      'SELECT * FROM NOTES', {type: sequelize.QueryTypes.SELECT});
+const getNotes = async () => {
+  // return await sequelize.query(
+  //     'SELECT * FROM NOTES', {type: sequelize.QueryTypes.SELECT});
+  return await db.notes.findAll();
 };
 
 const changeState = async (sequelize, id) => {
