@@ -22,6 +22,7 @@ const routes = [{path: '/notes', method: 'GET', handler: getNotesHandler},
       params: schemas.putSchema,
     },
   }},
-  {path: '/quotes', method: 'GET', handler: getQuotesHandler}];
+  {path: '/quotes', method: 'GET', handler: getQuotesHandler},
+  {path: '/ping', method: 'GET', handler: () => 'pong'}];
 
 module.exports = routes;
