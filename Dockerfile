@@ -8,6 +8,6 @@ RUN npm install
 RUN migrate
 RUN createdb
 
-EXPOSE 8000
+EXPOSE 8080
 
-CMD ["./hello"]
+CMD ["node", "index.js"]
