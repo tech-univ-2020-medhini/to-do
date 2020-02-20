@@ -19,7 +19,8 @@
     "hapi-sequelizejs": "^3.1.0",
     "inspirational-quotes": "^1.0.8",
     "jest": "^25.1.0",
-    "pg": "^7.17.1",
+    "pg": "^7.18.1",
+    "pg-hstore": "^2.3.3",
     "promise-fs": "^2.1.1",
     "sequelize": "^5.21.3",
     "uuidv4": "^6.0.2"
