@@ -1,22 +1,26 @@
-const readWrite = require('../Utils/fileOperations');
+// const readWrite = require('../Utils/fileOperations');
+const db = require('../helpers/dbOperations');
 const {uuid} = require('uuidv4');
 
 const getNotesHandler = async (request, h) => {
-  const json = await readWrite.readJson();
-  return h.response(json).code(200);
+  try {
+    const json = await db.getNotes(request.server.sequelize);
+    return h.response(json).code(200);
+  } catch (err) {
+    return h.response(err.message).code(500);
+  }
 };
 
 const postNotesHandler = async (request, h) => {
   try {
-    const notesJson = await readWrite.readJson();
     const note = request.payload;
 
     note.id = uuid();
     note.active = true;
 
-    notesJson.notes = [...notesJson.notes, note];
-    readWrite.writeJson(JSON.stringify(notesJson));
-    return h.response('Note added').code(200);
+    const response = await db.insertNote(request.server.sequelize, note);
+
+    return h.response(response).code(200);
   } catch (err) {
     return h.response(err.message).code(500);
   }
@@ -24,18 +28,12 @@ const postNotesHandler = async (request, h) => {
 
 const deleteNotesHandler = async (request, h) => {
   try {
-    const notesJson = await readWrite.readJson();
     const noteId = request.params.id;
-    // const notesArray = notesJson.notes;
-    // let id = 0;
-    notesJson.notes = notesJson.notes.filter((note)=>note.id !== noteId);
-    // notesJson.notes.forEach((element) => {
-    //   if (element.id === noteId) {
-    //     notesJson.notes.splice(id, 1);
-    //   }
-    //   id += 1;
-    // });
-    readWrite.writeJson(JSON.stringify(notesJson));
+    const result = await db.deleteNote(request.server.sequelize, noteId);
+
+    if (!result) {
+      return h.response('No note deleted').code(404);
+    }
     return h.response('Note deleted').code(200);
   } catch (err) {
     return h.response(err.message).code(500);
@@ -43,24 +41,16 @@ const deleteNotesHandler = async (request, h) => {
 };
 const changeStateHandler = async (request, h) => {
   try {
-    const notesJson = await readWrite.readJson();
     const noteId = request.params.id;
-    let id = 0;
-    // notesJson.notes = noteJson.notes.filter((note)=>note.id !== noteId);
-    notesJson.notes.forEach((element) => {
-      if (element.id === noteId) {
-        notesJson.notes[id].active = !notesJson.notes[id].active;
-        return;
-      }
-      id += 1;
-    });
-    // console.log(notesJson.notes, id);
-
-    readWrite.writeJson(JSON.stringify(notesJson));
+    const result = await db.changeState(request.server.sequelize, noteId);
+    if (!result) {
+      return h.response('No note found').code(404);
+    }
     return h.response('State changed').code(200);
   } catch (err) {
     return h.response(err.message).code(500);
   }
 };
 
-module.exports = {getNotesHandler, postNotesHandler, deleteNotesHandler, changeStateHandler};
+module.exports = {getNotesHandler, postNotesHandler,
+  deleteNotesHandler, changeStateHandler};
