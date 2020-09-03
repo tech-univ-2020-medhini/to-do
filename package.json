@@ -12,7 +12,7 @@
   "author": "oak",
   "license": "ISC",
   "dependencies": {
-    "@hapi/hapi": "^19.0.5",
+    "@hapi/hapi": "^19.1.1",
     "@hapi/joi": "^17.1.0",
     "axios": "^0.19.2",
     "inspirational-quotes": "^1.0.8",
